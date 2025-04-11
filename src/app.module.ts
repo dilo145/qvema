@@ -4,8 +4,8 @@ import { AppService } from './app.service';
 import { UsersModule } from './modules/users/users.module';
 
 @Module({
-  imports: [UsersModule], // Importation du module des utilisateurs
-  controllers: [AppController], // Déclaration des contrôleurs
-  providers: [AppService], // Déclaration des services
+  imports: [UsersModule],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
