@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_USERNAME=qvema
+      - DB_PASSWORD=qvema_password
+      - DB_DATABASE=qvema
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    depends_on:
+      - db
+    networks:
+      - qvema-network
+    command: npm run dev  # ← If you're using NestJS, it should be start:dev, not "dev"
+
+  db:
+    image: mysql:8
+    restart: always
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_DATABASE=qvema
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - qvema-network
+
+networks:
+  qvema-network:
+    driver: bridge
+
+volumes:
+  mysql_data:
