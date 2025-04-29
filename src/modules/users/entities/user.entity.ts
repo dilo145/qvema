@@ -4,6 +4,8 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -22,6 +24,10 @@ export class User {
   })
   @Column({ unique: true })
   email: string;
+
+  @ApiProperty({ description: 'User password', required: false })
+  @Column()
+  password: string;
 
   @ApiProperty({
     description: 'User first name',
@@ -54,4 +60,19 @@ export class User {
   @ApiProperty({ description: 'Last update timestamp' })
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @ManyToMany('Interest')
+  @JoinTable({
+    name: 'user_interests',
+    joinColumn: { name: 'userId', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'interestId', referencedColumnName: 'id' },
+  })
+  interests: any[];
+
+  // Custom method to get user without password
+  toJSON() {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password, ...rest } = this;
+    return rest;
+  }
 }
