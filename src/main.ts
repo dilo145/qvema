@@ -7,7 +7,6 @@ import { ValidationPipe } from '@nestjs/common';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, new FastifyAdapter());
 
-  // Global validation pipe
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -15,17 +14,26 @@ async function bootstrap() {
     }),
   );
 
-  // Enable CORS
   app.enableCors();
 
-  // Swagger configuration
   const config = new DocumentBuilder()
     .setTitle('Qvema API')
-    .setDescription('The Qvema API documentation')
     .setVersion('1.0')
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
+
+  const sortedTags = [
+    'App',
+    'auth',
+    'users',
+    'projects',
+    'investments',
+    'interests',
+    'admin',
+  ];
+  document.tags = sortedTags.map((tag) => ({ name: tag }));
+
   SwaggerModule.setup('api', app, document, {
     swaggerOptions: {
       defaultModelsExpandDepth: -1,

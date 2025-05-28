@@ -7,9 +7,11 @@ import {
   ManyToOne,
   JoinColumn,
   OneToMany,
+  ManyToMany,
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { User } from '../../users/entities/user.entity';
+import { Interest } from '../../interests/entities/interest.entity';
 
 @Entity()
 export class Project {
@@ -66,4 +68,7 @@ export class Project {
   @ApiProperty({ description: 'Last update timestamp' })
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @ManyToMany(() => Interest, interest => interest.projects)
+  interests: Interest[];
 }

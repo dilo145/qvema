@@ -30,7 +30,7 @@ export class UsersService {
   }
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
-    const user = await this.findOne(id); // Reuse findOne to check existence
+    const user = await this.findOne(id);
     this.userRepository.merge(user, updateUserDto);
     return this.userRepository.save(user);
   }

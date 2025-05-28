@@ -14,10 +14,8 @@ export class InvestmentsService {
   ) {}
 
   async create(createInvestmentDto: CreateInvestmentDto, userId: string): Promise<Investment> {
-    // Verify that the project exists
     const project = await this.projectsService.findOne(createInvestmentDto.projectId);
 
-    // Check if user is not investing in their own project
     if (project.ownerId === userId) {
       throw new BadRequestException('You cannot invest in your own project');
     }
@@ -66,7 +64,6 @@ export class InvestmentsService {
   async remove(id: string, userId: string, isAdmin: boolean): Promise<void> {
     const investment = await this.findOne(id);
 
-    // Check if user is the investor or an admin
     if (investment.investorId !== userId && !isAdmin) {
       throw new ForbiddenException('You are not allowed to delete this investment');
     }

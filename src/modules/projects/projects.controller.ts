@@ -16,7 +16,12 @@ import { UpdateProjectDto } from './dto/update-project.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 
 @ApiTags('projects')
 @ApiBearerAuth()
@@ -60,7 +65,12 @@ export class ProjectsController {
     @Request() req,
   ) {
     const isAdmin = req.user.role === 'admin';
-    return this.projectsService.update(id, updateProjectDto, req.user.id, isAdmin);
+    return this.projectsService.update(
+      id,
+      updateProjectDto,
+      req.user.id,
+      isAdmin,
+    );
   }
 
   @Delete(':id')
@@ -72,5 +82,12 @@ export class ProjectsController {
   remove(@Param('id', ParseUUIDPipe) id: string, @Request() req) {
     const isAdmin = req.user.role === 'admin';
     return this.projectsService.remove(id, req.user.id, isAdmin);
+  }
+
+  @Get('recommended')
+  @ApiOperation({ summary: 'Get recommended projects based on user interests' })
+  @ApiResponse({ status: 200, description: 'Return recommended projects' })
+  getRecommendedProjects(@Request() req) {
+    return this.projectsService.getRecommendedProjects(req.user.id);
   }
 }

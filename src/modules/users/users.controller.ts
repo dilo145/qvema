@@ -25,11 +25,15 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { RequestWithUser } from '../auth/interfaces/request-with-user.interface';
+import { InterestsService } from '../interests/interests.service';
 
 @ApiTags('users')
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly interestsService: InterestsService,
+  ) {}
 
   @Post()
   @ApiOperation({ summary: 'Create a new user' })
@@ -120,5 +124,32 @@ export class UsersController {
   })
   remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.usersService.remove(id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('interests')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Add interests to current user' })
+  @ApiOkResponse({
+    description: 'Interests added to user',
+  })
+  addInterestsToUser(
+    @Body() interestName: string[],
+    @Request() req: RequestWithUser,
+  ) {
+    //get interest IDs from names
+    const interestIds = interestName.map((name) => name.trim());
+    return this.interestsService.addInterestsToUser(req.user.id, interestIds);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('interests')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Get current user interests' })
+  @ApiOkResponse({
+    description: 'Return user interests',
+  })
+  getUserInterests(@Request() req: RequestWithUser) {
+    return this.interestsService.getUserInterests(req.user.id);
   }
 }

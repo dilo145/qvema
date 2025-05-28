@@ -49,7 +49,6 @@ export class InvestmentsController {
   @ApiResponse({ status: 200, description: 'Return investments for a project' })
   @ApiResponse({ status: 403, description: 'Forbidden resource' })
   async getProjectInvestments(@Param('id', ParseUUIDPipe) projectId: string, @Request() req) {
-    // Check if user is the project owner or admin
     const project = await this.projectsService.findOne(projectId);
     const isAdmin = req.user.role === 'admin';
 

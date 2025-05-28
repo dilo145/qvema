@@ -22,7 +22,6 @@ export class AuthService {
   ) {}
 
   async register(registerDto: RegisterDto) {
-    // Check if user with email already exists
     const existingUser = await this.userRepository.findOne({
       where: { email: registerDto.email },
     });
@@ -30,16 +29,13 @@ export class AuthService {
       throw new BadRequestException('User with this email already exists');
     }
 
-    // Hash password
     const hashedPassword = await bcrypt.hash(registerDto.password, 10);
 
-    // Create new user
     const newUser = await this.usersService.create({
       ...registerDto,
       password: hashedPassword,
     });
 
-    // Create a new object to return (without the password)
     return {
       id: newUser.id,
       email: newUser.email,
@@ -52,7 +48,6 @@ export class AuthService {
   }
 
   async login(loginDto: LoginDto) {
-    // Explicitly define the type for user
     const user = await this.userRepository.findOne({
       where: { email: loginDto.email },
     });
@@ -61,7 +56,6 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    // Since we've checked user is not null, TypeScript knows it's safe
     const isPasswordValid = await bcrypt.compare(
       loginDto.password,
       user.password,
@@ -71,7 +65,6 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    // Generate JWT token
     const payload = { sub: user.id, email: user.email, role: user.role };
     const token = this.jwtService.sign(payload);
 

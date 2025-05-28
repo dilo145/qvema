@@ -69,9 +69,7 @@ export class User {
   })
   interests: any[];
 
-  // Custom method to get user without password
   toJSON() {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...rest } = this;
     return rest;
   }

@@ -9,7 +9,6 @@ export default class InitialDataSeeder implements Seeder {
     const userRepository = dataSource.getRepository(User);
     const interestRepository = dataSource.getRepository(Interest);
 
-    // Create default interests
     const interestsData = [
       { name: 'Technology' },
       { name: 'Environment' },
@@ -35,7 +34,6 @@ export default class InitialDataSeeder implements Seeder {
       }
     }
 
-    // Create default admin user
     const adminExists = await userRepository.findOne({
       where: { email: 'admin@example.com' },
     });
@@ -53,7 +51,6 @@ export default class InitialDataSeeder implements Seeder {
       console.log('Created admin user');
     }
 
-    // Create default entrepreneur
     const entrepreneurExists = await userRepository.findOne({
       where: { email: 'entrepreneur@example.com' },
     });
@@ -71,7 +68,6 @@ export default class InitialDataSeeder implements Seeder {
       console.log('Created entrepreneur user');
     }
 
-    // Create default investor
     const investorExists = await userRepository.findOne({
       where: { email: 'investor@example.com' },
     });

@@ -5,9 +5,11 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToMany,
+  JoinTable,
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { User } from '../../users/entities/user.entity';
+import { Project } from '../../projects/entities/project.entity';
 
 @Entity()
 export class Interest {
@@ -34,5 +36,18 @@ export class Interest {
   updatedAt: Date;
 
   @ManyToMany(() => User, user => user.interests)
+  @JoinTable({
+    name: 'user_interests',
+    joinColumn: { name: 'interestId', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'userId', referencedColumnName: 'id' },
+  })
   users: User[];
+
+  @ManyToMany(() => Project, project => project.interests)
+  @JoinTable({
+    name: 'project_interests',
+    joinColumn: { name: 'interestId', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'projectId', referencedColumnName: 'id' },
+  })
+  projects: Project[];
 }

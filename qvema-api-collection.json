@@ -1,0 +1,559 @@
+{
+  "info": {
+    "name": "Qvema API Collection",
+    "description": "Collection of API endpoints for the Qvema application",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "App",
+      "item": [
+        {
+          "name": "Get root",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/",
+            "description": "Get the API root"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/register",
+            "description": "Register a new user",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"password123\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"role\": \"investor\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/login",
+            "description": "Login and get JWT token",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"password123\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/users",
+            "description": "Create a new user",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"password123\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"role\": \"investor\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/users",
+            "description": "Get all users (admin only)",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get User Profile",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/users/profile",
+            "description": "Get current user profile",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Update User Profile",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/users/profile",
+            "description": "Update current user profile",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Updated Name\",\n  \"lastName\": \"Updated Last Name\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get User by ID",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/users/:id",
+            "description": "Get user by ID (admin only)",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "variable": [
+              {
+                "key": "id",
+                "value": "{{userId}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Update User by ID",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/users/:id",
+            "description": "Update user by ID (admin only)",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Updated Name\",\n  \"lastName\": \"Updated Last Name\"\n}"
+            },
+            "variable": [
+              {
+                "key": "id",
+                "value": "{{userId}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Delete User by ID",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/users/:id",
+            "description": "Delete user by ID (admin only)",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "variable": [
+              {
+                "key": "id",
+                "value": "{{userId}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Add Interests to User",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/users/interests",
+            "description": "Add interests to current user",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "[\"interest-id-1\", \"interest-id-2\"]"
+            }
+          }
+        },
+        {
+          "name": "Get User Interests",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/users/interests",
+            "description": "Get current user's interests",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Projects",
+      "item": [
+        {
+          "name": "Create Project",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/projects",
+            "description": "Create a new project (entrepreneur only)",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Project Title\",\n  \"description\": \"Project Description\",\n  \"fundingGoal\": 100000,\n  \"interestIds\": [\"interest-id-1\", \"interest-id-2\"]\n}"
+            }
+          }
+        },
+        {
+          "name": "Get All Projects",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/projects",
+            "description": "Get all projects",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Project by ID",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/projects/:id",
+            "description": "Get project by ID",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "variable": [
+              {
+                "key": "id",
+                "value": "{{projectId}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Update Project",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/projects/:id",
+            "description": "Update a project (entrepreneur only)",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Updated Project Title\",\n  \"description\": \"Updated Project Description\",\n  \"fundingGoal\": 200000\n}"
+            },
+            "variable": [
+              {
+                "key": "id",
+                "value": "{{projectId}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Delete Project",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/projects/:id",
+            "description": "Delete a project (entrepreneur or admin only)",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "variable": [
+              {
+                "key": "id",
+                "value": "{{projectId}}"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Investments",
+      "item": [
+        {
+          "name": "Create Investment",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/investments",
+            "description": "Create a new investment (investor only)",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"projectId\": \"{{projectId}}\",\n  \"amount\": 5000\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Investor's Investments",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/investments",
+            "description": "Get investor's investments (investor only)",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Project Investments",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/investments/project/:id",
+            "description": "Get investments for a project (project owner or admin only)",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "variable": [
+              {
+                "key": "id",
+                "value": "{{projectId}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Delete Investment",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/investments/:id",
+            "description": "Delete an investment (investor or admin only)",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "variable": [
+              {
+                "key": "id",
+                "value": "{{investmentId}}"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Interests",
+      "item": [
+        {
+          "name": "Get All Interests",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/interests",
+            "description": "Get all interests (public)"
+          }
+        },
+        {
+          "name": "Create Interest",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/interests",
+            "description": "Create a new interest (admin only)",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Technology\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Recommended Projects",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/interests/projects/recommended",
+            "description": "Get recommended projects based on interests",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "item": [
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/admin/users",
+            "description": "Get all users (admin only)",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Delete User",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/admin/users/:id",
+            "description": "Delete a user (admin only)",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "variable": [
+              {
+                "key": "id",
+                "value": "{{userId}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get All Investments",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/admin/investments",
+            "description": "Get all investments (admin only)",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "userId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "projectId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "investmentId",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}

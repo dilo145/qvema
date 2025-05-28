@@ -48,8 +48,10 @@ export class InterestsService {
     return user.interests;
   }
 
-  async addInterestsToUser(userId: string, interestIds: string[]): Promise<User> {
-    // Find user
+  async addInterestsToUser(
+    userId: string,
+    interestNames: string[],
+  ): Promise<User> {
     const user = await this.userRepository.findOne({
       where: { id: userId },
       relations: ['interests'],
@@ -59,20 +61,19 @@ export class InterestsService {
       throw new NotFoundException(`User with ID ${userId} not found`);
     }
 
-    // Find interests
-    const interests = await this.findByIds(interestIds);
+    const interests = await this.interestRepository.find({
+      where: { name: In(interestNames) },
+    });
 
-    if (interests.length !== interestIds.length) {
+    if (interests.length !== interestNames.length) {
       throw new NotFoundException('One or more interests not found');
     }
 
-    // Add interests to user
     if (!user.interests) {
       user.interests = [];
     }
 
-    // Merge existing interests with new ones
-    const existingInterestIds = user.interests.map(interest => interest.id);
+    const existingInterestIds = user.interests.map((interest) => interest.id);
     for (const interest of interests) {
       if (!existingInterestIds.includes(interest.id)) {
         user.interests.push(interest);
@@ -80,32 +81,5 @@ export class InterestsService {
     }
 
     return this.userRepository.save(user);
-  }
-
-  async getRecommendedProjects(userId: string): Promise<any[]> {
-    // This is a simplified recommendation algorithm
-    // In a real system, you would use more sophisticated methods
-    const user = await this.userRepository.findOne({
-      where: { id: userId },
-      relations: ['interests'],
-    });
-
-    if (!user) {
-      throw new NotFoundException(`User with ID ${userId} not found`);
-    }
-
-    // Get user interests categories
-    const interestCategories = user.interests.map(interest => interest.name);
-
-    // Find projects in these categories
-    const query = this.interestRepository
-      .createQueryBuilder('interest')
-      .innerJoin('interest.projects', 'project')
-      .where('interest.name IN (:...categories)', { categories: interestCategories })
-      .select(['project.id', 'project.title', 'project.description', 'project.budget', 'project.category']);
-
-    const projects = await query.getMany();
-
-    return projects;
   }
 }
