@@ -49,11 +49,18 @@ DB_DATABASE=qvema
 JWT_SECRET=your_jwt_secret_key_here
 ```
 
+## Prerequisites
+
+- **Node.js** and **npm**
+- **XAMPP** (for local development with MySQL)
+
+> Make sure to start **Apache** and **MySQL** via the XAMPP control panel before running the application.
+
 ## Running the Application
 
 ```bash
 # Development mode
-npm run start:dev
+npm run dev
 
 # Production mode
 npm run start:prod
