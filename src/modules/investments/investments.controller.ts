@@ -15,7 +15,12 @@ import { CreateInvestmentDto } from './dto/create-investment.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { ProjectsService } from '../projects/projects.service';
 
 @ApiTags('investments')
@@ -48,12 +53,17 @@ export class InvestmentsController {
   @ApiOperation({ summary: 'Get investments for a project' })
   @ApiResponse({ status: 200, description: 'Return investments for a project' })
   @ApiResponse({ status: 403, description: 'Forbidden resource' })
-  async getProjectInvestments(@Param('id', ParseUUIDPipe) projectId: string, @Request() req) {
+  async getProjectInvestments(
+    @Param('id', ParseUUIDPipe) projectId: string,
+    @Request() req,
+  ) {
     const project = await this.projectsService.findOne(projectId);
     const isAdmin = req.user.role === 'admin';
 
     if (project.ownerId !== req.user.id && !isAdmin) {
-      throw new ForbiddenException('You are not allowed to view these investments');
+      throw new ForbiddenException(
+        'You are not allowed to view these investments',
+      );
     }
 
     return this.investmentsService.findByProject(projectId);

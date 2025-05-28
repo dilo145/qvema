@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException, ForbiddenException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ForbiddenException,
+  BadRequestException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Investment } from './entities/investment.entity';
@@ -13,8 +18,13 @@ export class InvestmentsService {
     private readonly projectsService: ProjectsService,
   ) {}
 
-  async create(createInvestmentDto: CreateInvestmentDto, userId: string): Promise<Investment> {
-    const project = await this.projectsService.findOne(createInvestmentDto.projectId);
+  async create(
+    createInvestmentDto: CreateInvestmentDto,
+    userId: string,
+  ): Promise<Investment> {
+    const project = await this.projectsService.findOne(
+      createInvestmentDto.projectId,
+    );
 
     if (project.ownerId === userId) {
       throw new BadRequestException('You cannot invest in your own project');
@@ -65,7 +75,9 @@ export class InvestmentsService {
     const investment = await this.findOne(id);
 
     if (investment.investorId !== userId && !isAdmin) {
-      throw new ForbiddenException('You are not allowed to delete this investment');
+      throw new ForbiddenException(
+        'You are not allowed to delete this investment',
+      );
     }
 
     await this.investmentRepository.remove(investment);

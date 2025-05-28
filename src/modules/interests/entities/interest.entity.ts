@@ -35,7 +35,7 @@ export class Interest {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @ManyToMany(() => User, user => user.interests)
+  @ManyToMany(() => User, (user) => user.interests)
   @JoinTable({
     name: 'user_interests',
     joinColumn: { name: 'interestId', referencedColumnName: 'id' },
@@ -43,7 +43,7 @@ export class Interest {
   })
   users: User[];
 
-  @ManyToMany(() => Project, project => project.interests)
+  @ManyToMany(() => Project, (project) => project.interests)
   @JoinTable({
     name: 'project_interests',
     joinColumn: { name: 'interestId', referencedColumnName: 'id' },

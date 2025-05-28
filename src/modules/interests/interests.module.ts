@@ -10,7 +10,7 @@ import { Project } from '../projects/entities/project.entity';
 @Module({
   imports: [
     TypeOrmModule.forFeature([Interest, User, Project]),
-    forwardRef(() => UsersModule)
+    forwardRef(() => UsersModule),
   ],
   controllers: [InterestsController],
   providers: [InterestsService],
